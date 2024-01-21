@@ -6,8 +6,6 @@ import com.example.todosbackend.repositories.TodoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class TodoService {
@@ -18,20 +16,12 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
-    public List<TransferTodo> getAllTodos() {
-        return todoRepository.findAll().stream().map(
-                todo -> {
-                    TransferTodo transferTodo = new TransferTodo();
-                    transferTodo.setId(todo.Id());
-                    transferTodo.setTitle(todo.title());
-                    transferTodo.setDone(todo.done());
-                    return transferTodo;
-                }
-        ).collect(Collectors.toList());
+    public List<Todo> getAllTodos() {
+        return todoRepository.findAll();
     }
 
     public Todo addTodo(TransferTodo transferTodo) {
-        Todo todo = new Todo(transferTodo.getId(), transferTodo.getTitle(), transferTodo.getDone());
+        Todo todo = new Todo(transferTodo.getId(), transferTodo.getTitle(), transferTodo.isDone());
         return todoRepository.save(todo);
     }
 }
